@@ -25,4 +25,47 @@
 * 注册事件：在程序中通过 EventEmitter 实例注册事件和对应的处理器。
 * 触发事件：当指定的事件发生时，EventEmitter 会触发该事件。
 * 处理事件：事件循环会调度相应的回调函数来执行任务。
-6. 
+6. exports 和 module.exports 的使用
+如果要对外暴露属性或方法，就用 exports 就行，要暴露对象(类似class，包含了很多属性和方法)，就用 module.exports。
+7. CommonJS 特点：
+* 同步加载：适合服务器端环境，因为模块通常都在本地文件系统中，加载速度快。
+* 运行时加载：require() 可以在代码的任何位置调用，这使得你可以根据条件来动态加载模块。
+* 缓存机制：require() 加载的模块会被缓存，第二次导入时会直接从缓存中读取，避免重复加载。
+8. ESM 特点：
+* 异步加载：默认是异步加载，不会阻塞主线程，更适合浏览器环境，但在 Node.js 中通常表现为同步加载。
+* 静态分析：import 和 export 语句在代码执行前就可以确定模块的依赖关系，这使得工具（如 Webpack、Vite）可以进行更好的优化（如 Tree Shaking）。
+* 严格模式：ESM 模块默认在严格模式下运行。
+9. CommonJS 和 ESM 的区别   
+    | 项目 | CommonJS | ESM |
+    |---|---|---|
+    | 语法	| require / module.exports	| import / export |
+    | 加载机制	| 运行时同步加载	| 编译时静态加载 |
+    | 默认支持	| Node.js 默认支持	| 需 .mjs 或 "type": "module" |
+    | 适合场景	| 后端脚本、老项目	| 前后端现代项目、Tree-shaking |
+    | 是否可混用	| 不能直接混用（需额外配置）	| 不能直接混用（需额外配置） |
+10. 混合使用.  
+Node.js 在较新版本中支持两种模块系统共存。你可以在同一个项目中同时使用 CommonJS 和 ESM，但需要注意以下几点：
+* ESM 中不能直接使用 require() 和 module.exports。
+* CommonJS 中不能直接使用 import 和 export。
+* 如果想在 ESM 中导入 CommonJS 模块，可以直接使用 import 语句，ESM 会将其视为默认导出。
+    ```js
+    // commonjs_module.js
+    module.exports = { data: 'hello' };
+
+    // esm_module.mjs
+    import commonModule from './commonjs_module.js';
+    console.log(commonModule.data); // 输出: hello
+    ```
+* 如果想在 CommonJS 中导入 ESM 模块，你需要使用动态 import() 函数。
+    ```js
+    // esm_module.mjs
+    export const name = 'Bob';
+
+    // commonjs_module.js
+    async function loadESM() {
+    const { name } = await import('./esm_module.mjs');
+    console.log(name);
+    }
+    loadESM();
+    ```
+11. 
