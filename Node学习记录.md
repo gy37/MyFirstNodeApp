@@ -68,4 +68,18 @@ Node.js 在较新版本中支持两种模块系统共存。你可以在同一个
     }
     loadESM();
     ```
-11. 
+11. 闭包是指一个函数能够记住并访问其词法作用域，即使这个函数在其词法作用域之外执行。
+    ```js
+    function createCounter() {
+        let count = 0;
+        return function() {
+            count++;
+            return count;
+        };
+    }
+
+    const counter = createCounter();
+    console.log(counter()); // 1
+    console.log(counter()); // 2
+    ```
+12. 
