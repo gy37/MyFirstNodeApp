@@ -82,4 +82,4 @@ Node.js 在较新版本中支持两种模块系统共存。你可以在同一个
     console.log(counter()); // 1
     console.log(counter()); // 2
     ```
-12. 
+12. 在浏览器 JavaScript 中，通常 window 是全局对象， 而 Node.js 中的全局对象是 global，所有全局变量（除了 global 本身以外）都是 global 对象的属性。
